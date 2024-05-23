@@ -1,12 +1,22 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-    res.send('Servidor Express.JS funcionando corretamente!')
+app.use(bodyParser.json());
+
+app.post('/api/auth/login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (username === 'usuario' && password === 'senha') {
+        res.status(200).json({ message: 'Login bem-sucedido' });
+
+    } else {
+        res.status(401).json({ error: 'Credenciais inválidas' });
+    }
 });
 
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Servidor está rodando na porta ${PORT}`)
